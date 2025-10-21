@@ -42,11 +42,11 @@ namespace RichIZ.Services
             var issuedDate = DateTime.Now;
             var expiryDate = type switch
             {
-                LicenseType.Trial => issuedDate.AddDays(7),
+                LicenseType.Trial => issuedDate.AddDays(3), // 강화: 7일 → 3일
                 LicenseType.Monthly => issuedDate.AddMonths(1),
                 LicenseType.Yearly => issuedDate.AddYears(1),
                 LicenseType.Lifetime => issuedDate.AddYears(100),
-                _ => issuedDate.AddDays(7)
+                _ => issuedDate.AddDays(3)
             };
 
             var license = new License

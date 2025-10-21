@@ -15,6 +15,12 @@ namespace RichIZ.Data
         public DbSet<License> Licenses { get; set; }
         public DbSet<AIAnalysis> AIAnalyses { get; set; }
 
+        public AppDbContext()
+        {
+            // 데이터베이스가 없으면 자동으로 생성
+            Database.EnsureCreated();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
