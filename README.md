@@ -132,13 +132,14 @@
 - Windows 10/11 (x64)
 - .NET 9.0 Runtime (자동 포함된 self-contained 빌드)
 
-### EXE 파일 실행
-1. `Release/RichIZ_v3.0.0_JSON.exe` 다운로드
-2. 더블클릭으로 실행
-3. 초기 라이센스 활성화
-   - **체험판**: 3일 무료 자동 발급
-   - **프리미엄 영구 라이센스**: `OCLSK-7TWS0-6KM8K-MQTCF-UDSR0` (개발자 전용)
-4. (선택) OneDrive 폴더 설정하여 클라우드 동기화 활성화
+### EXE 파일 실행 (설치 불필요)
+1. **Release 폴더 전체**를 원하는 위치에 복사
+2. `Release/RichIZ.exe` 더블클릭으로 실행
+3. 바로 사용 가능 (라이센스 제한 없음)
+4. (선택) 라이센스 메뉴에서 프리미엄 키 입력: `OCLSK-7TWS0-6KM8K-MQTCF-UDSR0`
+
+⚠️ **중요**: Release 폴더의 모든 DLL 파일들이 필요합니다.
+RichIZ.exe만 복사하면 실행되지 않습니다.
 
 ### 데이터 저장소
 - **JSON 파일 기반**: `%APPDATA%\RichIZ\*.json`
