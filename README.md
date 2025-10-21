@@ -1,6 +1,8 @@
-# RichIZ - AI 자산관리 Ultimate v3.0
+# RichIZ - AI 자산관리 Ultimate v3.0 (JSON Edition)
 
 **AI 기반 개인 자산 관리 애플리케이션** - 클라우드 동기화와 모바일 연동을 지원하는 궁극의 재무 관리 솔루션
+
+**⚡ JSON 기반 저장소** - SQLite 제거, 더 빠르고 안정적인 파일 기반 데이터 저장
 
 ## 🌟 주요 기능
 
@@ -112,18 +114,17 @@
 
 - **Framework**: .NET 9.0
 - **UI**: WPF (Windows Presentation Foundation)
-- **Database**: SQLite with Entity Framework Core 9.0
+- **Data Storage**: **JSON Files** (SQLite 제거, 파일 기반 저장소)
 - **Architecture**: MVVM Pattern
 - **Charts**: LiveCharts2
 - **Security**: AES Encryption, SHA-256 Hashing
 - **Libraries**:
   - CommunityToolkit.Mvvm 8.3.2
-  - Microsoft.EntityFrameworkCore.Sqlite 9.0.0
   - LiveChartsCore.SkiaSharpView.WPF 2.0.0-rc3.3
   - System.Management 9.0.0
-  - **ClosedXML 0.104.2** (v3.0 - Excel XLSX 생성)
-  - **QuestPDF 2024.12.3** (v3.0 - PDF 리포트 생성)
-  - **Newtonsoft.Json 13.0.3** (v3.0 - REST API)
+  - **ClosedXML 0.104.2** (Excel XLSX 생성)
+  - **QuestPDF 2024.12.3** (PDF 리포트 생성)
+  - **Newtonsoft.Json 13.0.3** (JSON 직렬화 및 REST API)
 
 ## 📦 설치 및 실행
 
@@ -132,10 +133,17 @@
 - .NET 9.0 Runtime (자동 포함된 self-contained 빌드)
 
 ### EXE 파일 실행
-1. `Release/RichIZ_v3.0.0.exe` 다운로드
+1. `Release/RichIZ_v3.0.0_JSON.exe` 다운로드
 2. 더블클릭으로 실행
-3. 초기 라이센스 활성화 (체험판 7일 무료)
+3. 초기 라이센스 활성화
+   - **체험판**: 3일 무료 자동 발급
+   - **프리미엄 영구 라이센스**: `OCLSK-7TWS0-6KM8K-MQTCF-UDSR0` (개발자 전용)
 4. (선택) OneDrive 폴더 설정하여 클라우드 동기화 활성화
+
+### 데이터 저장소
+- **JSON 파일 기반**: `%APPDATA%\RichIZ\*.json`
+- 자동 저장, 백업 간편
+- SQLite 의존성 제거로 안정성 향상
 
 ### 개발 환경 설정
 
@@ -224,7 +232,10 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 
 ## 📄 라이센스
 
-MIT License
+**GNU AGPL-3.0** (MIT보다 강력한 카피레프트 라이센스)
+- 수정 및 배포 시 소스코드 공개 의무
+- 네트워크 사용도 배포로 간주
+- 상업적 사용 가능하나 소스코드 공개 필요
 
 ## 👨‍💻 개발자
 
@@ -260,7 +271,11 @@ MIT License
 
 ## 버전 히스토리
 
-- **v3.0.0** (2025-10-21) - **Ultimate Edition**
+- **v3.0.0 JSON Edition** (2025-10-21) - **Ultimate Edition**
+  - ⚡ **JSON 파일 기반 저장소로 완전 전환** (SQLite 제거)
+  - 📁 데이터 안정성 및 이식성 향상
+  - 🔑 **라이센스 AGPL-3.0으로 강화** (MIT → AGPL)
+  - 🎫 프리미엄 영구 라이센스 지원
   - ☁️ OneDrive 클라우드 동기화
   - 📱 모바일 앱 REST API 서버
   - 📄 PDF 월간 리포트 생성
@@ -271,7 +286,7 @@ MIT License
   - 🎯 목표 달성 가능성 AI 시뮬레이션
   - 💾 자동 클라우드 백업
   - 📊 더 많은 차트 및 분석 기능
-  - ⚡ 187MB Self-contained 단일 EXE
+  - ⚡ 134MB Self-contained 단일 EXE (SQLite 제거로 경량화)
 
 - **v2.0.0** (2025-10-21) - **Pro Edition**
   - AI 분석 엔진 추가

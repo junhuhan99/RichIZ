@@ -101,8 +101,8 @@ namespace RichIZ.Services
 
         private object GetTransactions()
         {
-            using var context = new AppDbContext();
-            var transactions = context.Transactions
+            // JSON DataStore 사용
+            var transactions = JsonDataStore.LoadTransactions()
                 .OrderByDescending(t => t.Date)
                 .Take(50)
                 .Select(t => new
@@ -121,8 +121,8 @@ namespace RichIZ.Services
 
         private object GetInvestments()
         {
-            using var context = new AppDbContext();
-            var investments = context.Investments
+            // JSON DataStore 사용
+            var investments = JsonDataStore.LoadInvestments()
                 .Select(i => new
                 {
                     i.Id,
@@ -139,17 +139,17 @@ namespace RichIZ.Services
 
         private object GetSummary()
         {
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
             var now = DateTime.Now;
-            var monthlyTransactions = context.Transactions
+            var monthlyTransactions = JsonDataStore.LoadTransactions()
                 .Where(t => t.Date.Year == now.Year && t.Date.Month == now.Month)
                 .ToList();
 
             var income = monthlyTransactions.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount);
             var expense = monthlyTransactions.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount);
-            var totalInvestment = context.Investments.Sum(i => i.CurrentValue);
-            var totalBank = context.BankAccounts.Sum(b => b.Balance);
+            var totalInvestment = JsonDataStore.LoadInvestments().Sum(i => i.CurrentValue);
+            var totalBank = JsonDataStore.LoadBankAccounts().Sum(b => b.Balance);
 
             return new
             {
@@ -168,8 +168,8 @@ namespace RichIZ.Services
 
         private object GetGoals()
         {
-            using var context = new AppDbContext();
-            var goals = context.FinancialGoals
+            // JSON DataStore 사용
+            var goals = JsonDataStore.LoadFinancialGoals()
                 .Where(g => !g.IsCompleted)
                 .Select(g => new
                 {

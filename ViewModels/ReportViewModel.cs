@@ -43,14 +43,14 @@ namespace RichIZ.ViewModels
 
         private void LoadMonthlyTrend()
         {
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
             var incomeData = new List<decimal>();
             var expenseData = new List<decimal>();
 
             for (int month = 1; month <= 12; month++)
             {
-                var monthlyTransactions = context.Transactions
+                var monthlyTransactions = JsonDataStore.LoadTransactions()
                     .Where(t => t.Date.Year == SelectedYear && t.Date.Month == month)
                     .ToList();
 
@@ -91,9 +91,9 @@ namespace RichIZ.ViewModels
 
         private void LoadCategoryBreakdown()
         {
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
-            var expenses = context.Transactions
+            var expenses = JsonDataStore.LoadTransactions()
                 .Where(t => t.Date.Year == SelectedYear &&
                            t.Date.Month == SelectedMonth &&
                            t.Type == TransactionType.Expense)

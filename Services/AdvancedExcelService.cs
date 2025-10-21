@@ -16,31 +16,31 @@ namespace RichIZ.Services
         public void ExportAllDataToExcel(string filePath)
         {
             using var workbook = new XLWorkbook();
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
             // 거래 내역 시트
             var transactionsSheet = workbook.Worksheets.Add("거래내역");
-            var transactions = context.Transactions.OrderByDescending(t => t.Date).ToList();
+            var transactions = JsonDataStore.LoadTransactions().OrderByDescending(t => t.Date).ToList();
             CreateTransactionsSheet(transactionsSheet, transactions);
 
             // 투자 포트폴리오 시트
             var investmentsSheet = workbook.Worksheets.Add("투자포트폴리오");
-            var investments = context.Investments.ToList();
+            var investments = JsonDataStore.LoadInvestments().ToList();
             CreateInvestmentsSheet(investmentsSheet, investments);
 
             // 은행 계좌 시트
             var bankAccountsSheet = workbook.Worksheets.Add("은행계좌");
-            var bankAccounts = context.BankAccounts.ToList();
+            var bankAccounts = JsonDataStore.LoadBankAccounts().ToList();
             CreateBankAccountsSheet(bankAccountsSheet, bankAccounts);
 
             // 예산 시트
             var budgetsSheet = workbook.Worksheets.Add("예산");
-            var budgets = context.Budgets.ToList();
+            var budgets = JsonDataStore.LoadBudgets().ToList();
             CreateBudgetsSheet(budgetsSheet, budgets);
 
             // 재무 목표 시트
             var goalsSheet = workbook.Worksheets.Add("재무목표");
-            var goals = context.FinancialGoals.ToList();
+            var goals = JsonDataStore.LoadFinancialGoals().ToList();
             CreateGoalsSheet(goalsSheet, goals);
 
             // 요약 시트

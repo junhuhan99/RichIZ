@@ -6,7 +6,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Microsoft.EntityFrameworkCore;
 
 namespace RichIZ.ViewModels
 {
@@ -40,11 +39,11 @@ namespace RichIZ.ViewModels
 
         private void LoadDashboardData()
         {
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
             var now = DateTime.Now;
 
             // 이번 달 수입/지출
-            var monthlyTransactions = context.Transactions
+            var monthlyTransactions = JsonDataStore.LoadTransactions()
                 .Where(t => t.Date.Year == now.Year && t.Date.Month == now.Month)
                 .ToList();
 
@@ -57,7 +56,7 @@ namespace RichIZ.ViewModels
                 .Sum(t => t.Amount);
 
             // 투자 자산 가치
-            var investments = context.Investments.ToList();
+            var investments = JsonDataStore.LoadInvestments().ToList();
             InvestmentValue = investments.Sum(i => i.CurrentValue);
 
             // 총 자산

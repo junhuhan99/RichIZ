@@ -51,10 +51,10 @@ namespace RichIZ.ViewModels
             if (string.IsNullOrWhiteSpace(Category) || BudgetAmount <= 0)
                 return;
 
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
             // 같은 카테고리와 월이 있는지 확인
-            var existing = context.Budgets
+            var existing = JsonDataStore.LoadBudgets()
                 .FirstOrDefault(b => b.Category == Category &&
                                b.Month == SelectedMonth &&
                                b.Year == SelectedYear);
@@ -72,10 +72,10 @@ namespace RichIZ.ViewModels
                     Month = SelectedMonth,
                     Year = SelectedYear
                 };
-                context.Budgets.Add(budget);
+                JsonDataStore.LoadBudgets().Add(budget);
             }
 
-            context.SaveChanges();
+            // 자동 저장됨
             LoadBudgets();
             ClearForm();
         }
@@ -83,12 +83,12 @@ namespace RichIZ.ViewModels
         [RelayCommand]
         private void LoadBudgets()
         {
-            using var context = new AppDbContext();
-            var budgets = context.Budgets
+            // JSON DataStore 사용
+            var budgets = JsonDataStore.LoadBudgets()
                 .Where(b => b.Month == SelectedMonth && b.Year == SelectedYear)
                 .ToList();
 
-            var transactions = context.Transactions
+            var transactions = JsonDataStore.LoadTransactions()
                 .Where(t => t.Date.Month == SelectedMonth &&
                            t.Date.Year == SelectedYear &&
                            t.Type == TransactionType.Expense)

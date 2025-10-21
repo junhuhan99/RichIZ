@@ -57,7 +57,7 @@ namespace RichIZ.ViewModels
             if (string.IsNullOrWhiteSpace(Name) || Quantity <= 0 || PurchasePrice <= 0)
                 return;
 
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
             var investment = new Investment
             {
                 Name = Name,
@@ -70,8 +70,8 @@ namespace RichIZ.ViewModels
                 Notes = Notes
             };
 
-            context.Investments.Add(investment);
-            context.SaveChanges();
+            JsonDataStore.LoadInvestments().Add(investment);
+            // 자동 저장됨
 
             LoadInvestments();
             ClearForm();
@@ -82,13 +82,13 @@ namespace RichIZ.ViewModels
         {
             if (SelectedInvestment == null || CurrentPrice <= 0) return;
 
-            using var context = new AppDbContext();
-            var investment = context.Investments.Find(SelectedInvestment.Id);
+            // JSON DataStore 사용
+            var investment = JsonDataStore.LoadInvestments().FirstOrDefault(i => i.Id == SelectedInvestment.Id);
             if (investment != null)
             {
                 investment.CurrentPrice = CurrentPrice;
                 investment.LastUpdated = DateTime.Now;
-                context.SaveChanges();
+                // 자동 저장됨
             }
 
             LoadInvestments();
@@ -99,12 +99,12 @@ namespace RichIZ.ViewModels
         {
             if (SelectedInvestment == null) return;
 
-            using var context = new AppDbContext();
-            var investment = context.Investments.Find(SelectedInvestment.Id);
+            // JSON DataStore 사용
+            var investment = JsonDataStore.LoadInvestments().FirstOrDefault(i => i.Id == SelectedInvestment.Id);
             if (investment != null)
             {
-                context.Investments.Remove(investment);
-                context.SaveChanges();
+                JsonDataStore.LoadInvestments().Remove(investment);
+                // 자동 저장됨
             }
 
             LoadInvestments();
@@ -113,8 +113,8 @@ namespace RichIZ.ViewModels
         [RelayCommand]
         private void LoadInvestments()
         {
-            using var context = new AppDbContext();
-            var items = context.Investments.ToList();
+            // JSON DataStore 사용
+            var items = JsonDataStore.LoadInvestments().ToList();
 
             Investments.Clear();
             foreach (var item in items)

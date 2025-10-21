@@ -48,7 +48,6 @@ namespace RichIZ.ViewModels
             if (string.IsNullOrWhiteSpace(BankName) || string.IsNullOrWhiteSpace(AccountNumber))
                 return;
 
-            using var context = new AppDbContext();
             var account = new BankAccount
             {
                 BankName = BankName,
@@ -59,8 +58,7 @@ namespace RichIZ.ViewModels
                 AccountNickname = AccountNickname
             };
 
-            context.BankAccounts.Add(account);
-            context.SaveChanges();
+            JsonDataStore.AddBankAccount(account);
 
             LoadAccounts();
             ClearForm();
@@ -71,14 +69,9 @@ namespace RichIZ.ViewModels
         {
             if (SelectedAccount == null) return;
 
-            using var context = new AppDbContext();
-            var account = context.BankAccounts.Find(SelectedAccount.Id);
-            if (account != null)
-            {
-                account.Balance = Balance;
-                account.LastUpdated = DateTime.Now;
-                context.SaveChanges();
-            }
+            SelectedAccount.Balance = Balance;
+            SelectedAccount.LastUpdated = DateTime.Now;
+            JsonDataStore.UpdateBankAccount(SelectedAccount);
 
             LoadAccounts();
         }
@@ -88,13 +81,7 @@ namespace RichIZ.ViewModels
         {
             if (SelectedAccount == null) return;
 
-            using var context = new AppDbContext();
-            var account = context.BankAccounts.Find(SelectedAccount.Id);
-            if (account != null)
-            {
-                context.BankAccounts.Remove(account);
-                context.SaveChanges();
-            }
+            JsonDataStore.DeleteBankAccount(SelectedAccount.Id);
 
             LoadAccounts();
         }
@@ -102,8 +89,7 @@ namespace RichIZ.ViewModels
         [RelayCommand]
         private void LoadAccounts()
         {
-            using var context = new AppDbContext();
-            var accounts = context.BankAccounts.ToList();
+            var accounts = JsonDataStore.LoadBankAccounts();
 
             BankAccounts.Clear();
             foreach (var account in accounts)

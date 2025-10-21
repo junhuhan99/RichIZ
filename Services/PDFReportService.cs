@@ -15,14 +15,14 @@ namespace RichIZ.Services
         {
             QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
-            var transactions = context.Transactions
+            var transactions = JsonDataStore.LoadTransactions()
                 .Where(t => t.Date.Year == year && t.Date.Month == month)
                 .ToList();
 
-            var investments = context.Investments.ToList();
-            var bankAccounts = context.BankAccounts.ToList();
+            var investments = JsonDataStore.LoadInvestments().ToList();
+            var bankAccounts = JsonDataStore.LoadBankAccounts().ToList();
 
             Document.Create(container =>
             {

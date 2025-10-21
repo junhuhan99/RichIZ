@@ -14,15 +14,15 @@ namespace RichIZ.Services
         /// </summary>
         public string AnalyzeFinancialHealth()
         {
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
             var sb = new StringBuilder();
             sb.AppendLine("🏥 재무 건강도 종합 분석\n");
 
-            var transactions = context.Transactions.ToList();
-            var investments = context.Investments.ToList();
-            var bankAccounts = context.BankAccounts.ToList();
-            var goals = context.FinancialGoals.ToList();
+            var transactions = JsonDataStore.LoadTransactions().ToList();
+            var investments = JsonDataStore.LoadInvestments().ToList();
+            var bankAccounts = JsonDataStore.LoadBankAccounts().ToList();
+            var goals = JsonDataStore.LoadFinancialGoals().ToList();
 
             // 1. 유동성 분석
             var liquidAssets = bankAccounts.Where(b => b.AccountType == AccountType.Checking || b.AccountType == AccountType.Savings).Sum(b => b.Balance);
@@ -193,22 +193,22 @@ namespace RichIZ.Services
         /// </summary>
         public string PredictFutureAssets(int months)
         {
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
             var sb = new StringBuilder();
             sb.AppendLine($"🔮 {months}개월 후 자산 예측\n");
 
             // 최근 6개월 평균 저축액
-            var last6Months = context.Transactions.Where(t => t.Date >= DateTime.Now.AddMonths(-6)).ToList();
+            var last6Months = JsonDataStore.LoadTransactions().Where(t => t.Date >= DateTime.Now.AddMonths(-6)).ToList();
             var avgMonthlySavings = last6Months.GroupBy(t => new { t.Date.Year, t.Date.Month })
                 .Average(g => g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount) -
                              g.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount));
 
             // 현재 자산
-            var currentAssets = context.BankAccounts.Sum(b => b.Balance) + context.Investments.Sum(i => i.CurrentValue);
+            var currentAssets = JsonDataStore.LoadBankAccounts().Sum(b => b.Balance) + JsonDataStore.LoadInvestments().Sum(i => i.CurrentValue);
 
             // 투자 수익률 (연 5% 가정)
-            var investmentAssets = context.Investments.Sum(i => i.CurrentValue);
+            var investmentAssets = JsonDataStore.LoadInvestments().Sum(i => i.CurrentValue);
             var monthlyGrowthRate = 0.05m / 12m;
 
             sb.AppendLine($"현재 총 자산: {currentAssets:N0}원");

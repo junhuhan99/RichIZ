@@ -5,7 +5,6 @@ using RichIZ.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace RichIZ.ViewModels
 {
@@ -52,7 +51,7 @@ namespace RichIZ.ViewModels
             if (string.IsNullOrWhiteSpace(Title) || Amount <= 0 || string.IsNullOrWhiteSpace(Category))
                 return;
 
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
             var transaction = new Transaction
             {
                 Title = Title,
@@ -63,8 +62,8 @@ namespace RichIZ.ViewModels
                 Description = Description
             };
 
-            context.Transactions.Add(transaction);
-            context.SaveChanges();
+            JsonDataStore.LoadTransactions().Add(transaction);
+            // 자동 저장됨
 
             LoadTransactions();
             ClearForm();
@@ -75,9 +74,9 @@ namespace RichIZ.ViewModels
         {
             if (SelectedTransaction == null) return;
 
-            using var context = new AppDbContext();
-            context.Transactions.Remove(SelectedTransaction);
-            context.SaveChanges();
+            // JSON DataStore 사용
+            JsonDataStore.LoadTransactions().Remove(SelectedTransaction);
+            // 자동 저장됨
 
             LoadTransactions();
         }
@@ -85,8 +84,8 @@ namespace RichIZ.ViewModels
         [RelayCommand]
         private void LoadTransactions()
         {
-            using var context = new AppDbContext();
-            var items = context.Transactions
+            // JSON DataStore 사용
+            var items = JsonDataStore.LoadTransactions()
                 .OrderByDescending(t => t.Date)
                 .ToList();
 

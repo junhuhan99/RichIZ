@@ -45,7 +45,7 @@ namespace RichIZ.ViewModels
             if (string.IsNullOrWhiteSpace(Title) || TargetAmount <= 0)
                 return;
 
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
             var goal = new FinancialGoal
             {
                 Title = Title,
@@ -56,8 +56,8 @@ namespace RichIZ.ViewModels
                 Description = Description
             };
 
-            context.FinancialGoals.Add(goal);
-            context.SaveChanges();
+            JsonDataStore.LoadFinancialGoals().Add(goal);
+            // 자동 저장됨
 
             LoadGoals();
             ClearForm();
@@ -68,8 +68,8 @@ namespace RichIZ.ViewModels
         {
             if (SelectedGoal == null) return;
 
-            using var context = new AppDbContext();
-            var goal = context.FinancialGoals.Find(SelectedGoal.Id);
+            // JSON DataStore 사용
+            var goal = JsonDataStore.LoadFinancialGoals().FirstOrDefault(g => g.Id == SelectedGoal.Id);
             if (goal != null)
             {
                 goal.CurrentAmount = CurrentAmount;
@@ -77,7 +77,7 @@ namespace RichIZ.ViewModels
                 {
                     goal.IsCompleted = true;
                 }
-                context.SaveChanges();
+                // 자동 저장됨
             }
 
             LoadGoals();
@@ -88,12 +88,12 @@ namespace RichIZ.ViewModels
         {
             if (SelectedGoal == null) return;
 
-            using var context = new AppDbContext();
-            var goal = context.FinancialGoals.Find(SelectedGoal.Id);
+            // JSON DataStore 사용
+            var goal = JsonDataStore.LoadFinancialGoals().FirstOrDefault(g => g.Id == SelectedGoal.Id);
             if (goal != null)
             {
-                context.FinancialGoals.Remove(goal);
-                context.SaveChanges();
+                JsonDataStore.LoadFinancialGoals().Remove(goal);
+                // 자동 저장됨
             }
 
             LoadGoals();
@@ -102,8 +102,8 @@ namespace RichIZ.ViewModels
         [RelayCommand]
         private void LoadGoals()
         {
-            using var context = new AppDbContext();
-            var goalList = context.FinancialGoals
+            // JSON DataStore 사용
+            var goalList = JsonDataStore.LoadFinancialGoals()
                 .OrderBy(g => g.IsCompleted)
                 .ThenBy(g => g.TargetDate)
                 .ToList();

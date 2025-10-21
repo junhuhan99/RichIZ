@@ -60,9 +60,7 @@ namespace RichIZ.Services
                 IsActive = true
             };
 
-            using var context = new AppDbContext();
-            context.Licenses.Add(license);
-            context.SaveChanges();
+            JsonDataStore.AddLicense(license);
 
             return license;
         }
@@ -72,8 +70,8 @@ namespace RichIZ.Services
         /// </summary>
         public bool ActivateLicense(string licenseKey)
         {
-            using var context = new AppDbContext();
-            var license = context.Licenses.FirstOrDefault(l => l.LicenseKey == licenseKey);
+            var licenses = JsonDataStore.LoadLicenses();
+            var license = licenses.FirstOrDefault(l => l.LicenseKey == licenseKey);
 
             if (license == null)
                 return false;
@@ -87,7 +85,7 @@ namespace RichIZ.Services
             license.IsActive = true;
             license.ActivatedDate = DateTime.Now;
             license.MachineId = GetMachineId();
-            context.SaveChanges();
+            JsonDataStore.UpdateLicense(license);
 
             return true;
         }
@@ -97,10 +95,10 @@ namespace RichIZ.Services
         /// </summary>
         public bool ValidateLicense()
         {
-            using var context = new AppDbContext();
+            var licenses = JsonDataStore.LoadLicenses();
             var machineId = GetMachineId();
 
-            var license = context.Licenses
+            var license = licenses
                 .Where(l => l.MachineId == machineId && l.IsActive)
                 .OrderByDescending(l => l.ExpiryDate)
                 .FirstOrDefault();
@@ -111,7 +109,7 @@ namespace RichIZ.Services
             if (license.IsExpired)
             {
                 license.IsActive = false;
-                context.SaveChanges();
+                JsonDataStore.UpdateLicense(license);
                 return false;
             }
 
@@ -123,10 +121,10 @@ namespace RichIZ.Services
         /// </summary>
         public License? GetCurrentLicense()
         {
-            using var context = new AppDbContext();
+            var licenses = JsonDataStore.LoadLicenses();
             var machineId = GetMachineId();
 
-            return context.Licenses
+            return licenses
                 .Where(l => l.MachineId == machineId && l.IsActive)
                 .OrderByDescending(l => l.ExpiryDate)
                 .FirstOrDefault();

@@ -37,13 +37,13 @@ namespace RichIZ.ViewModels
 
             await Task.Run(() =>
             {
-                using var context = new AppDbContext();
+                // JSON DataStore 사용
 
-                var investments = context.Investments.ToList();
-                var transactions = context.Transactions.ToList();
-                var budgets = context.Budgets.ToList();
-                var bankAccounts = context.BankAccounts.ToList();
-                var goals = context.FinancialGoals.ToList();
+                var investments = JsonDataStore.LoadInvestments().ToList();
+                var transactions = JsonDataStore.LoadTransactions().ToList();
+                var budgets = JsonDataStore.LoadBudgets().ToList();
+                var bankAccounts = JsonDataStore.LoadBankAccounts().ToList();
+                var goals = JsonDataStore.LoadFinancialGoals().ToList();
 
                 PortfolioAnalysis = _aiService.AnalyzeInvestmentPortfolio(investments);
                 SpendingAnalysis = _aiService.AnalyzeSpendingPattern(transactions);
@@ -58,13 +58,13 @@ namespace RichIZ.ViewModels
         [RelayCommand]
         private void LoadAnalyses()
         {
-            using var context = new AppDbContext();
+            // JSON DataStore 사용
 
-            var investments = context.Investments.ToList();
-            var transactions = context.Transactions.ToList();
-            var budgets = context.Budgets.ToList();
-            var bankAccounts = context.BankAccounts.ToList();
-            var goals = context.FinancialGoals.ToList();
+            var investments = JsonDataStore.LoadInvestments().ToList();
+            var transactions = JsonDataStore.LoadTransactions().ToList();
+            var budgets = JsonDataStore.LoadBudgets().ToList();
+            var bankAccounts = JsonDataStore.LoadBankAccounts().ToList();
+            var goals = JsonDataStore.LoadFinancialGoals().ToList();
 
             if (investments.Any())
                 PortfolioAnalysis = _aiService.AnalyzeInvestmentPortfolio(investments);
