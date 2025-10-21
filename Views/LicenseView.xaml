@@ -1,0 +1,104 @@
+<UserControl x:Class="RichIZ.Views.LicenseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:RichIZ.ViewModels">
+    <UserControl.DataContext>
+        <vm:LicenseViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="🔑 라이센스 관리" Style="{StaticResource TitleStyle}"/>
+
+        <!-- 현재 라이센스 상태 -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="현재 라이센스 상태" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                <TextBlock Text="{Binding CurrentLicenseInfo}" FontSize="14" TextWrapping="Wrap" Foreground="#2C3E50"/>
+                <TextBlock Margin="0,10,0,0" Foreground="#E74C3C" FontWeight="Bold" FontSize="14"
+                           Visibility="{Binding IsLicenseValid, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                    ⚠️ 라이센스가 없거나 만료되었습니다. 앱의 일부 기능이 제한될 수 있습니다.
+                </TextBlock>
+            </StackPanel>
+        </Border>
+
+        <!-- 라이센스 활성화 -->
+        <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="라이센스 활성화" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="라이센스 키" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Text="{Binding LicenseKey, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputStyle}" FontFamily="Consolas"
+                                 ToolTip="형식: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1" Content="활성화" Command="{Binding ActivateLicenseCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}" VerticalAlignment="Bottom"
+                            Padding="30,10"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- 라이센스 발급 (관리자용) -->
+        <Border Grid.Row="3" Style="{StaticResource CardStyle}">
+            <StackPanel>
+                <TextBlock Text="🔧 라이센스 발급 (관리자 전용)" FontSize="18" FontWeight="Bold" Margin="0,0,0,15" Foreground="#E74C3C"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,10">
+                        <TextBlock Text="이메일" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,10">
+                        <TextBlock Text="사용자 이름" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,10">
+                        <TextBlock Text="라이센스 유형" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox SelectedItem="{Binding SelectedLicenseType}" Height="35" FontSize="14">
+                            <ComboBox.Items>
+                                <ComboBoxItem Content="체험판 (7일)" Tag="Trial"/>
+                                <ComboBoxItem Content="월간 구독" Tag="Monthly" IsSelected="True"/>
+                                <ComboBoxItem Content="연간 구독" Tag="Yearly"/>
+                                <ComboBoxItem Content="평생 라이센스" Tag="Lifetime"/>
+                            </ComboBox.Items>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Button Grid.Row="1" Grid.Column="1" Content="라이센스 생성" Command="{Binding GenerateLicenseCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}" VerticalAlignment="Bottom" Margin="10,0,0,0"/>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                        <TextBlock Text="생성된 라이센스 키" Style="{StaticResource LabelStyle}"/>
+                        <TextBox Text="{Binding LicenseKey}" IsReadOnly="True" FontFamily="Consolas"
+                                 Style="{StaticResource InputStyle}" Background="#F0F0F0"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

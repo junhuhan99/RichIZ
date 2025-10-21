@@ -10,6 +10,10 @@ namespace RichIZ.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Investment> Investments { get; set; }
         public DbSet<Budget> Budgets { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<FinancialGoal> FinancialGoals { get; set; }
+        public DbSet<License> Licenses { get; set; }
+        public DbSet<AIAnalysis> AIAnalyses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -46,6 +50,24 @@ namespace RichIZ.Data
             // Budget 설정
             modelBuilder.Entity<Budget>()
                 .Property(b => b.Amount)
+                .HasColumnType("decimal(18,2)");
+
+            // BankAccount 설정
+            modelBuilder.Entity<BankAccount>()
+                .Property(b => b.Balance)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<BankAccount>()
+                .Property(b => b.InterestRate)
+                .HasColumnType("decimal(5,2)");
+
+            // FinancialGoal 설정
+            modelBuilder.Entity<FinancialGoal>()
+                .Property(g => g.TargetAmount)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<FinancialGoal>()
+                .Property(g => g.CurrentAmount)
                 .HasColumnType("decimal(18,2)");
         }
     }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:RichIZ.Views"
         mc:Ignorable="d"
-        Title="RichIZ - 자산관리" Height="700" Width="1200"
+        Title="RichIZ - AI 자산관리 Pro v2.0" Height="750" Width="1300"
         WindowStartupLocation="CenterScreen"
         Background="#F5F5F5">
     <Grid>
@@ -18,11 +18,11 @@
         <Border Grid.Column="0" Background="#2C3E50" Padding="0">
             <StackPanel>
                 <!-- 로고/제목 -->
-                <Border Background="#1A252F" Padding="20" Margin="0,0,0,20">
+                <Border Background="#1A252F" Padding="20" Margin="0,0,0,15">
                     <StackPanel>
-                        <TextBlock Text="💰 RichIZ" FontSize="28" FontWeight="Bold"
+                        <TextBlock Text="💰 RichIZ Pro" FontSize="26" FontWeight="Bold"
                                    Foreground="White" HorizontalAlignment="Center"/>
-                        <TextBlock Text="자산관리 앱" FontSize="14"
+                        <TextBlock Text="AI 자산관리 v2.0" FontSize="12"
                                    Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                     </StackPanel>
                 </Border>
@@ -30,14 +30,28 @@
                 <!-- 메뉴 버튼들 -->
                 <Button Content="📊 대시보드" Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding NavigateToCommand}" CommandParameter="Dashboard"/>
+
+                <TextBlock Text="자산 관리" Foreground="#7F8C8D" Margin="20,15,0,5" FontSize="11"/>
                 <Button Content="💵 수입/지출" Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding NavigateToCommand}" CommandParameter="Transaction"/>
+                <Button Content="🏦 은행 계좌" Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding NavigateToCommand}" CommandParameter="BankAccount"/>
                 <Button Content="📈 투자 포트폴리오" Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding NavigateToCommand}" CommandParameter="Investment"/>
                 <Button Content="💳 예산 관리" Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding NavigateToCommand}" CommandParameter="Budget"/>
+                <Button Content="🎯 재무 목표" Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding NavigateToCommand}" CommandParameter="Goal"/>
+
+                <TextBlock Text="AI 분석" Foreground="#7F8C8D" Margin="20,15,0,5" FontSize="11"/>
+                <Button Content="🤖 AI 분석 센터" Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding NavigateToCommand}" CommandParameter="AI"/>
                 <Button Content="📉 리포트" Style="{StaticResource MenuButtonStyle}"
                         Command="{Binding NavigateToCommand}" CommandParameter="Report"/>
+
+                <TextBlock Text="설정" Foreground="#7F8C8D" Margin="20,15,0,5" FontSize="11"/>
+                <Button Content="🔑 라이센스" Style="{StaticResource MenuButtonStyle}"
+                        Command="{Binding NavigateToCommand}" CommandParameter="License"/>
             </StackPanel>
         </Border>
 
@@ -61,6 +75,13 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentView}" Value="BankAccount">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <views:BankAccountView/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding CurrentView}" Value="Investment">
                                 <Setter Property="Content">
                                     <Setter.Value>
@@ -75,10 +96,31 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentView}" Value="Goal">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <views:GoalView/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentView}" Value="AI">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <views:AIView/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding CurrentView}" Value="Report">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <views:ReportView/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentView}" Value="License">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <views:LicenseView/>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

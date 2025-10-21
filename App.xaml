@@ -11,6 +11,8 @@
 
             <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
             <converters:GreaterThanConverter x:Key="GreaterThanConverter"/>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

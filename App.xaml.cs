@@ -1,5 +1,6 @@
 using System.Windows;
 using RichIZ.Data;
+using RichIZ.Services;
 
 namespace RichIZ
 {
@@ -13,6 +14,17 @@ namespace RichIZ
             using (var context = new AppDbContext())
             {
                 context.Database.EnsureCreated();
+            }
+
+            // 자동 백업 실행
+            try
+            {
+                var backupService = new BackupService();
+                backupService.AutoBackup();
+            }
+            catch
+            {
+                // 백업 실패는 무시
             }
         }
     }
