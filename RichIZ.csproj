@@ -7,11 +7,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>RichIZ</AssemblyName>
-    <Product>RichIZ - AI 자산관리 Pro</Product>
-    <Version>2.0.0</Version>
+    <Product>RichIZ - AI 자산관리 Ultimate</Product>
+    <Version>3.0.0</Version>
     <Authors>junhuhan99</Authors>
     <Company>RichIZ</Company>
-    <Description>AI 기반 개인 자산 관리 애플리케이션 - Premium Edition</Description>
+    <Description>AI 기반 개인 자산 관리 애플리케이션 - Ultimate Edition with Cloud Sync</Description>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -26,6 +26,9 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc3.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="System.Management" Version="9.0.0" />
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+    <PackageReference Include="QuestPDF" Version="2024.12.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
